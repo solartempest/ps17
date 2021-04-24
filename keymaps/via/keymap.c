@@ -25,12 +25,6 @@ enum layer_names {
     _LAYER2,
     _LAYER3
 };
-
-    /*k10, k11, k12, k13, \
-      k20, k21, k22, k23, \
-      k30, k31, k32, 	  \
-      k40, k41, k42, k43, \
-      k50, 		k52		  \*/
 	  
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LAYER0] = LAYOUT(
@@ -74,51 +68,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void led_set_user(uint8_t usb_led) {
-
 	if (usb_led & (1 << USB_LED_NUM_LOCK)) {
 		DDRD |= (1 << 0); PORTD &= ~(1 << 0);
 	} else {
 		DDRD &= ~(1 << 0); PORTD &= ~(1 << 0);
 	}
-
 	if (usb_led & (1 << USB_LED_CAPS_LOCK)) {
 		DDRD |= (1 << 5); PORTD &= ~(1 << 5);
 	} else {
 		DDRD &= ~(1 << 5); PORTD &= ~(1 << 5);
 	}
-
 	if (usb_led & (1 << USB_LED_SCROLL_LOCK)) {
 		DDRD |= (1 << 4); PORTD &= ~(1 << 4);
 	} else {
 		DDRD &= ~(1 << 4); PORTD &= ~(1 << 4);
 	}
-
 	if (usb_led & (1 << USB_LED_COMPOSE)) {
-		
 	} else {
-		
 	}
-
 	if (usb_led & (1 << USB_LED_KANA)) {
-		
 	} else {
-		
 	}
-
 }
 
 void keyboard_post_init_user(void) {
   #ifdef RGBLIGHT_ENABLE
-    // Set up RGB effects on _only_ the third LED (index 2)
-    //rgblight_set_effect_range(2, 1);
-    // Set LED effects to breathing mode in a tealish blue color
 	rgblight_enable();
     rgblight_sethsv_noeeprom(185, 255, 255);
     rgblight_mode_noeeprom(RGBLIGHT_EFFECT_BREATHING + 2);
-
-    // Init the first two LEDs to a static color
-/*    setrgb(0, 0, 0, (LED_TYPE *)&led[0]);
-    setrgb(0, 0, 0, (LED_TYPE *)&led[1]);*/
     rgblight_set();
   #endif //RGBLIGHT_ENABLE
 }
