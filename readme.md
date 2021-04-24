@@ -1,20 +1,17 @@
 # Atlantis PS17 Macropad
 
-![Atlantis PS17 Macropad]
+![Atlantis PS17](https://i.imgur.com/YmNTW4m.jpg)
+![Front View](https://i.imgur.com/OMy4szt.jpg)
 
 A 21-key macro pad with pushbutton encoder and support for per key RGB and underglow.
 
 * Keyboard Maintainer: QMK Community
-* Hardware Supported: Atlantis PS17  
-* Hardware Availability: [Kespresso](https://keyspresso.ca/collections/all-products/products/hotswap-numpad?variant=39303208697988)
+* Hardware Supported: Atlantis PS17 v2
+* Hardware Availability: [Keyspresso](https://keyspresso.ca/collections/all-products/products/hotswap-numpad?variant=39303208697988)
 
 Make example for this keyboard (after setting up your build environment):
 
-    make solartempest/ps17:default
-
-Flashing example for this keyboard:
-
-    make solartempest/ps17:default:flash
+    make solartempest/ps17:via
 
 To reset the board into bootloader mode, tap the Reset switch mounted on the bottom of the PCB.
 
