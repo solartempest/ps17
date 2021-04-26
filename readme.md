@@ -3,9 +3,9 @@
 ![Atlantis PS17](https://i.imgur.com/YmNTW4m.jpg)
 ![Front View](https://i.imgur.com/OMy4szt.jpg)
 
-A 21-key macro pad with pushbutton encoder and support for per key RGB and underglow.
+A 21-key macro pad with pushbutton rotary encoder and underglow RGB per key RGB and for the case.
 
-* Keyboard Maintainer: QMK Community
+* Keyboard Maintainer: solartempest
 * Hardware Supported: Atlantis PS17 v2
 * Hardware Availability: [Keyspresso](https://keyspresso.ca/collections/all-products/products/hotswap-numpad?variant=39303208697988)
 
