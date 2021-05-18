@@ -67,6 +67,7 @@
 	#define RGBLIGHT_HUE_STEP 8
 	#define RGBLIGHT_SAT_STEP 8
 	#define RGBLIGHT_VAL_STEP 8
+	#define RGBLIGHT_DEFAULT_VAL 40 // default brightness on clearing EEPROM
 	#define RGBLIGHT_LIMIT_VAL 200 // brightness level max is 255
 	#define RGBLIGHT_SLEEP //  if defined, RGB lighting off when host is sleeping
 	#define RGBLIGHT_ANIMATIONS
@@ -94,27 +95,6 @@
 		18, 17, 16, 15,    14, \
 		    22, 21, 20, 19,    \
 		27, 26, 25, 24,    23  )
-		
-	//Top->Bottom, Right->Left (Alternate mapping)
-	/*#define RGBLIGHT_LED_MAP LED_LAYOUT( \
-		23,                0,  \
-		24,                1,  \
-		25, 18, 13, 8, 5,  2,  \
-		    19, 14, 9, 6,      \
-		26, 20, 15, 10,    3,  \
-		    21, 16, 11, 7,     \
-		27, 22, 17, 12,    4 )*/
-		
-	//Top->Bottom, Left->Right (Alternate mapping)
-	/*#define RGBLIGHT_LED_MAP LED_LAYOUT( \
-		0,                23,  \
-		1,                24,  \
-		2, 5, 10, 15, 20, 25,  \
-		   6, 11, 16, 21,      \
-		3, 7, 12, 17,     26,  \
-		   8, 13, 18, 22,      \
-		4, 9, 14, 19,     27 )*/
-
 #endif
 
 #ifdef RGB_MATRIX_ENABLE // For dynamic RGB Matrix effects
@@ -156,27 +136,9 @@
 #endif
 
 /* Set 0 if debouncing isn't needed */
-#define DEBOUNCE 0
+#define DEBOUNCE 5
 
 /* Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap */
 #define LOCKING_SUPPORT_ENABLE
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
-
-/*
- * Feature disable options
- *  These options are also useful to firmware size reduction.
- */
-
-/* disable debug print */
-//#define NO_DEBUG
-
-/* disable print */
-//#define NO_PRINT
-
-/* disable action features */
-//#define NO_ACTION_LAYER
-//#define NO_ACTION_TAPPING
-//#define NO_ACTION_ONESHOT
-//#define NO_ACTION_MACRO
-//#define NO_ACTION_FUNCTION
