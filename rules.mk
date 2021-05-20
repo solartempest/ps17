@@ -24,4 +24,6 @@ AUDIO_ENABLE = no          # Audio output
 MIDI_ENABLE = no           # No midi
 UNICODE_ENABLE = yes       # Unicode
 ENCODER_ENABLE = yes       # For encoder
+COMBO_ENABLE = yes         # Tap combo chording
+TAP_DANCE_ENABLE = yes     # Tap dance
 LTO_ENABLE = yes           # Reduce firmware size
