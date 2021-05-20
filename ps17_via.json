@@ -4,6 +4,18 @@
   "productId": "0x0015",
   "lighting": "qmk_rgblight",
   "matrix": { "rows": 6, "cols": 4 },
+  "customKeycodes": [
+    {
+      "name": "Super Alt Tab FWD",
+      "title": "Alt Tab Forwards in Windows",
+      "shortName": "ATABF"
+    },
+	{
+      "name": "Super Alt Tab REV",
+      "title": "Alt Tab Reverse in Windows",
+      "shortName": "ATABR"
+    }
+  ],
   "layouts": 
   {
     "keymap": 
