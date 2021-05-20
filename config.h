@@ -37,14 +37,7 @@
 #endif
 #define MATRIX_COLS 4
 
-    /*k00, k01, k12      \
-      k10, k11, k12, k13 \
-      k20, k21, k22, k23 \
-      k30, k31, k32, ___ \
-      k40, k41, k42, k43 \
-      k50, ___, k52, ___  \*/
-
-// Rotary encoder has built in debounce circuit
+// Encoder matrix
 #define ENCODERS_PAD_A { D1 }
 #define ENCODERS_PAD_B { D2 }
 
@@ -142,3 +135,8 @@
 #define LOCKING_SUPPORT_ENABLE
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
+
+#define COMBO_COUNT 2 //Number of tap combos used
+#define COMBO_TERM 300 //Default combo time is 200ms
+
+#define TAPPING_TERM 200 //Tap dance time
