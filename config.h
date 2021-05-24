@@ -40,6 +40,7 @@
 // Encoder matrix
 #define ENCODERS_PAD_A { D1 }
 #define ENCODERS_PAD_B { D2 }
+#define ENCODER_DIRECTION_FLIP
 
 #define MATRIX_ROW_PINS { F0, B4, B5, B6, C6, C7 } //Rotary encoder SPST is on F0,F7
 #define MATRIX_COL_PINS { F6, F7, D3, D6 }
