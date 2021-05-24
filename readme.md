@@ -1,9 +1,9 @@
 # Atlantis PS17 Macropad
 
 ![Atlantis PS17](https://i.imgur.com/YmNTW4m.jpg)
-![Front View](https://i.imgur.com/OMy4szt.jpg)
-![Side View](https://i.imgur.com/CFHMzKO.jpg)
 ![Rear View](https://i.imgur.com/IeJLtAD.jpg)
+![PCB View](https://i.imgur.com/OMy4szt.jpg)
+![Side View](https://i.imgur.com/CFHMzKO.jpg)
 
 A 21-key macro pad with pushbutton rotary encoder and underglow RGB per key RGB and for the case.
 
