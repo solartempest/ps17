@@ -2,12 +2,14 @@
 
 ![Atlantis PS17](https://i.imgur.com/YmNTW4m.jpg)
 ![Front View](https://i.imgur.com/OMy4szt.jpg)
+![Side View](https://i.imgur.com/CFHMzKO.jpg)
+![Rear View](https://i.imgur.com/IeJLtAD.jpg)
 
 A 21-key macro pad with pushbutton rotary encoder and underglow RGB per key RGB and for the case.
 
 * Keyboard Maintainer: solartempest
 * Hardware Supported: Atlantis PS17 v2
-* Hardware Availability: [rioo897](https://shop198276076.world.taobao.com/search.htm?spm=2013.1.w5002-23418336364.1.3f4d7d519Qf3nQ)
+* Hardware Availability: [Keyspresso](https://keyspresso.ca/collections/all-products/products/hotswap-numpad?variant=39303208697988)
 
 Make example for this keyboard (after setting up your build environment):
 
