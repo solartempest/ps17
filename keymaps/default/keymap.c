@@ -30,7 +30,7 @@ uint16_t alt_tab_timer = 0;
 	  ATABR //Alt tab reverse
 	};
 #else
-	enum custom_keycodes { //Use USER 00 instead of SAFE_RANGE for Via. Don't forget to update the VIA json as well.
+	enum custom_keycodes { //Use SAFE_RANGE when Via is disabled.
 	  ATABF = SAFE_RANGE, //Alt tab forwards
 	  ATABR //Alt tab reverse
 	};
@@ -80,7 +80,7 @@ enum layer_names {
 	  
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LAYER0] = LAYOUT(
-		KC_PGDOWN, KC__MUTE, KC_PGUP,
+		KC_PGUP, KC__MUTE, KC_PGDOWN,
 		MO(_LAYER1), KC_KP_SLASH, KC_KP_ASTERISK, TD(TD_MINUS_NUMLOCK),
         KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_PLUS,
         KC_KP_4, KC_KP_5, KC_KP_6,
@@ -88,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_KP_0,          KC_KP_DOT
     ),
     [_LAYER1] = LAYOUT(
-		KC_RIGHT, KC_TRNS, KC_LEFT,
+		KC_LEFT, KC_TRNS, KC_RIGHT,
         KC_TRNS, KC_MEDIA_STOP, KC_SPACE, KC_NUMLOCK,
         TO(_LAYER4), TG(_LAYER2), TG(_LAYER3), KC_BSPACE,
         KC_TRNS, KC_TRNS, KC_TRNS,
@@ -96,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RESET,          KC_TRNS
     ),
     [_LAYER2] = LAYOUT(
-		KC_RBRACKET, KC_TRNS, KC_LBRACKET,
+		KC_LBRACKET, KC_TRNS, KC_RBRACKET,
         TO(0), KC_B, KC_T, C(S(KC_N)),
         KC_J, KC_S, KC_D, C(KC_MINS),
         C(KC_C), C(KC_V), KC_M,
@@ -104,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_SPACE,          KC_LALT
     ),
     [_LAYER3] = LAYOUT(
-		ATABF, KC_TRNS, ATABR,
+		ATABR, KC_TRNS, ATABF,
         TO(0), KC_WWW_REFRESH, KC_HOME, C(KC_T),
         C(S(KC_TAB)), KC_UP, C(KC_TAB), C(KC_W),
         KC_LEFT, KC_DOWN, KC_RIGHT,
@@ -112,11 +112,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_PGDOWN,          KC_PGUP
     ),
     [_LAYER4] = LAYOUT(
-		ATABF, KC_TRNS, ATABR,
+		ATABR, KC_TRNS, ATABF,
         TO(0), KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_UP, KC_TRNS, KC_TRNS,
         KC_LEFT, KC_DOWN, KC_RIGHT,
-        C(S(KC_M)), LWIN(KC_F4), KC_TRNS, KC_NUMLOCK,
+        C(S(KC_M)), LWIN(KC_F4), KC_TRNS, KC_SCROLLLOCK,
         KC_F13,          KC_F14
     ),
     [_LAYER5] = LAYOUT(
