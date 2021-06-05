@@ -5,7 +5,7 @@
 ![PCB View](https://i.imgur.com/OMy4szt.jpg)
 ![Side View](https://i.imgur.com/CFHMzKO.jpg)
 
-A 21-key macro pad with pushbutton rotary encoder and underglow RGB per key RGB and for the case.
+A 17-key macro pad with pushbutton rotary encoder and underglow RGB per key RGB and for the case.
 
 * Keyboard Maintainer: solartempest
 * Hardware Supported: Atlantis PS17 v2
