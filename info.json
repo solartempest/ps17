@@ -1,7 +1,7 @@
 {
     "keyboard_name": "Atlantis PS17 Macropad",
     "url": "",
-    "maintainer": "qmk", 
+    "maintainer": "solartempest", 
     "width": 4, 
     "height": 6, 
     "layouts": {
