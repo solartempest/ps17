@@ -1,5 +1,5 @@
 {
- "name": "PS17" ,
+  "name": "PS17" ,
   "vendorId": "0x414B",
   "productId": "0x0015",
   "lighting": "qmk_rgblight",
@@ -10,10 +10,20 @@
       "title": "Alt Tab Forwards in Windows",
       "shortName": "ATABF"
     },
-	{
+    {
       "name": "Super Alt Tab REV",
       "title": "Alt Tab Reverse in Windows",
       "shortName": "ATABR"
+    },
+    {
+      "name": "Move Window Right",
+      "title": "Move Window Right in Windows",
+      "shortName": "MWR"
+    },
+    {
+      "name": "Move Window Left",
+      "title": "Move Window Left in Windows",
+      "shortName": "MWL"
     }
   ],
   "layouts": 
