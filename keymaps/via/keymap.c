@@ -61,7 +61,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     // Tap once for Escape, twice for Caps Lock
     [TD_MINUS_NUMLOCK] = ACTION_TAP_DANCE_DOUBLE(KC_KP_MINUS, KC_NUMLOCK),
 };
-//TD(TD_MINUS_NUMLOCK) // Add tap dance item to keymap in place of a keycode. Not VIA compatible.
+//TD(TD_MINUS_NUMLOCK) // Add tap dance item to your keymap in place of a keycode
 
 
 enum layer_names {
@@ -285,39 +285,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 			for (uint8_t i = 0; i < RGBLED_NUM; i++){
 				current_hue=i*layer2_hueincrement+layer2_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
-				if (i == 1 || i == 3) { //Underglow LEDs
-				  rgblight_sethsv_at(current_hue,255,underglow_brightness,i);
-				} else if (i == 0 || i == 2 || i == 4 || i == 14 || i == 23) { //make right side of the numpad underglow darker
-				  rgblight_sethsv_at(current_hue,255,lastrow_brightness,i);
-				}
-				else if (i == 6) {rgblight_sethsv_at(148,255,perkey_brightness+15,i);} //Text - light blue
-				else if (i == 5) {rgblight_sethsv_at(140,255,perkey_brightness+15,i);} //New Layer - light blue
-				else if (i == 15) {rgblight_sethsv_at(195,255,perkey_brightness+15,i);} //Marquee - rose
-				else if (i == 9) {rgblight_sethsv_at(190,255,underglow_brightness,i);} //Underglow to match
-				else if (i == 13) {rgblight_sethsv_at(180,255,perkey_brightness+15,i);} //Healing Brush - purple
-				else if (i == 12) {rgblight_sethsv_at(185,255,perkey_brightness+15,i);} //Clone
-				else if (i == 11) {rgblight_sethsv_at(190,255,perkey_brightness+15,i);} //Default
-				else if (i == 7) {rgblight_sethsv_at(195,255,perkey_brightness+15,i);} //Brush
-				else if (i == 18) {rgblight_sethsv_at(230,255,underglow_brightness,i);} //Underglow to match
-				else if (i == 17) {rgblight_sethsv_at(0,255,perkey_brightness+15,i);} //copy - red
-				else if (i == 16) {rgblight_sethsv_at(3,255,perkey_brightness+15,i);} //Paste
-				else if (i == 22) {rgblight_sethsv_at(5,255,perkey_brightness+15,i);} //Undo
-				else if (i == 21) {rgblight_sethsv_at(0,255,perkey_brightness+15,i);} //Redo
-				else if (i == 26) {rgblight_sethsv_at(200,255,lastrow_brightness+15,i);} //Space - blue
-				else if (i == 24) {rgblight_sethsv_at(195,255,lastrow_brightness+15,i);} //Alt
-				else if (i == 20) {rgblight_sethsv_at(190,255,lastrow_brightness+15,i);} //Shift
-				else if (i == 27) {rgblight_sethsv_at(200,255,underglow_brightness,i);} //Underglow to match
-				else if (i == 10) {rgblight_sethsv_at(current_hue,255,lastrow_brightness,i);} //Zoom in
-				else if (i == 19) {rgblight_sethsv_at(current_hue,255,lastrow_brightness,i);} //Zoom out
-				else if (i == 25) {rgblight_sethsv_at(180,255,underglow_brightness,i);} //Underglow to match
-				else {
-				  rgblight_sethsv_at(current_hue,255,perkey_brightness,i);
-				};
-			};
-			
-			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code is for normal gradient colouration
-				current_hue=i*layer2_hueincrement+layer2_huestart; //Determine the calculated hue
-				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
 				if (i == 1 || i == 3 || i == 9 || i == 18 || i == 25 || i == 27) {	  
 				  rgblight_sethsv_at(current_hue,255,underglow_brightness,i);
 				} else if (i == 0 || i == 2 || i == 4 || i == 14 || i == 23) { //make right side of the numpad underglow darker
@@ -327,7 +294,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 				} else {
 				  rgblight_sethsv_at(current_hue,255,perkey_brightness,i);
 				};
-			};*/
+			};
 			break;
 		case _LAYER3:
 			for (uint8_t i = 0; i < RGBLED_NUM; i++){
