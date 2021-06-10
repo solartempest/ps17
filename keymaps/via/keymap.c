@@ -24,15 +24,21 @@
 
 bool is_alt_tab_active = false; // Super Alt Tab Code
 uint16_t alt_tab_timer = 0;
+bool is_window_move_active = false; // Move Window Code
+uint16_t move_window_timer = 0;
 #ifdef VIA_ENABLE
 	enum custom_keycodes { //Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
 	  ATABF = USER00, //Alt tab forwards
-	  ATABR //Alt tab reverse
+	  ATABR, //Alt tab reverse
+	  NMR, //Move window to monitor on right
+	  NML //Move window to monitor on left
 	};
 #else
 	enum custom_keycodes { //Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
 	  ATABF = SAFE_RANGE, //Alt tab forwards
-	  ATABR //Alt tab reverse
+	  ATABR, //Alt tab reverse
+	  NMR, //Move window to monitor on right
+	  NML //Move window to monitor on left
 	};
 #endif
 
@@ -171,9 +177,16 @@ void matrix_scan_user(void) { //run whenever user matrix is scanned
       is_alt_tab_active = false;
     }
   }
+  if (is_window_move_active) {
+    if (timer_elapsed(move_window_timer) > 1000) {
+      unregister_code(KC_LSFT);
+      unregister_code(KC_LWIN);
+      is_window_move_active = false;
+    }
+  }
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) { //Actions to override existing key behaviours
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	switch (keycode) { //For super alt tab keycodes
 	case ATABF:	//Alt tab forwards
 	  if (record->event.pressed) {
@@ -201,9 +214,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) { //Actions to o
 		unregister_code(KC_TAB);
 	  }
 	  break;
+	  	case NMR:	//Move window to next monitor on right
+	  if (record->event.pressed) {
+		if (!is_window_move_active) {
+		  is_window_move_active = true;
+		  register_code(KC_LSFT);
+		  register_code(KC_LWIN);
+		}
+		move_window_timer = timer_read();
+		register_code(KC_RIGHT);
+	  } else {
+		unregister_code(KC_RIGHT);
+	  }
+	  break;
+	case NML:	//Move window to next monitor on left
+	  if (record->event.pressed) {
+		if (!is_window_move_active) {
+		  is_window_move_active = true;
+		  register_code(KC_LSFT);
+		  register_code(KC_LWIN);
+		}
+		move_window_timer = timer_read();
+		register_code(KC_LSHIFT);
+		register_code(KC_LEFT);
+	  } else {
+		unregister_code(KC_LEFT);
+	  }
+	  break;
 	}
 	return true;
-};
+}
 
 
 void keyboard_post_init_user(void) {	//run as last task in keyboard init
