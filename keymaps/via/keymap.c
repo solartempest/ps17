@@ -259,6 +259,7 @@ void keyboard_post_init_user(void) {	//run as last task in keyboard init
 	rgblight_enable();
 	rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_GRADIENT+8); //Set to static gradient 9. Looks great this way!
 	rgblight_sethsv(58, 255, 30); //Set lower default brightness when connected as the right side dimming is not yet in effect
+	layer_move(0); //start on layer 0 to get the lighting activated
   #endif
 };
 
