@@ -18,7 +18,7 @@
 
 #include "ps17.h"
 
-void encoder_update_user(uint8_t index, bool clockwise) { // QMK encoder functionality
+bool encoder_update_user(uint8_t index, bool clockwise) { // QMK encoder functionality
   #ifdef VIA_ENABLE //Add in VIA setting of rotary encoder keymap
 	    if (index == 0) { // First encoder
 		if (clockwise) {
@@ -36,6 +36,7 @@ void encoder_update_user(uint8_t index, bool clockwise) { // QMK encoder functio
 		  tap_code(dynamic_keymap_get_keycode(biton32(layer_state), 0, 2)); //Allow setting of keymap in VIA
 		}*/
   #endif
+  return true;
 }
 
 #ifdef RGB_MATRIX_ENABLE //Add in addressable LED underglow support with physical locations
