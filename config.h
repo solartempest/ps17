@@ -40,7 +40,7 @@
 // Encoder matrix
 #define ENCODERS_PAD_A { D1 }
 #define ENCODERS_PAD_B { D2 }
-#define ENCODER_DIRECTION_FLIP
+//#define ENCODER_DIRECTION_FLIP
 
 #define MATRIX_ROW_PINS { F0, B4, B5, B6, C6, C7 } //Rotary encoder SPST is on F0,F7
 #define MATRIX_COL_PINS { F6, F7, D3, D6 }
@@ -62,7 +62,9 @@
 	#define RGBLIGHT_SAT_STEP 8
 	#define RGBLIGHT_VAL_STEP 8
 	#define RGBLIGHT_DEFAULT_VAL 40 // default brightness on clearing EEPROM
-	#define RGBLIGHT_LIMIT_VAL 200 // brightness level max is 255
+	#define RGBLIGHT_LIMIT_VAL 180 // brightness level max is 255
+	#define RGBLIGHT_LAYERS
+	#define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
 	#define RGBLIGHT_SLEEP //  if defined, RGB lighting off when host is sleeping
 	#define RGBLIGHT_ANIMATIONS
 
@@ -137,7 +139,7 @@
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
 
-#define COMBO_COUNT 2 //Number of tap combos used
-#define COMBO_TERM 300 //Default combo time is 200ms
+#define COMBO_COUNT 6 //Number of tap combos used
+#define COMBO_TERM 350 //Default combo time is 200ms
 
 #define TAPPING_TERM 200 //Tap dance time
