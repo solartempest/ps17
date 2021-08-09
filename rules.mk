@@ -9,21 +9,15 @@ BOOTLOADER = atmel-dfu
 #
 
 BOOTMAGIC_ENABLE = no      # Virtual DIP switch configuration
-MOUSEKEY_ENABLE = yes       # Mouse keys
-EXTRAKEY_ENABLE = yes      # Audio control and System control
 CONSOLE_ENABLE = no        # Console for debug
-COMMAND_ENABLE = no        # Commands for debug and configuration
-SLEEP_LED_ENABLE = no      # Breathing sleep LED during USB suspend
+MOUSEKEY_ENABLE = yes      # Mouse keys
+EXTRAKEY_ENABLE = yes      # Audio control and System control
 NKRO_ENABLE = yes          # USB Nkey Rollover
-BACKLIGHT_ENABLE = no      # Enable keyboard backlight functionality
 RGBLIGHT_ENABLE = yes      # Enable keyboard RGB underglow
 RGB_MATRIX_ENABLE = no     # RGB matrix for individual LED control
-RGB_MATRIX_DRIVER = WS2812 # Addressable LED strand driver (keep for RGBLIGHT too)
-BLUETOOTH_ENABLE = no      # Enable Bluetooth
-AUDIO_ENABLE = no          # Audio output
-MIDI_ENABLE = no           # No midi
+RGB_MATRIX_DRIVER = WS2812 # Addressable LED strand driver
 UNICODE_ENABLE = yes       # Unicode
 ENCODER_ENABLE = yes       # For encoder
-COMBO_ENABLE = yes         # Tap combo chording
-TAP_DANCE_ENABLE = yes     # Tap dance
 LTO_ENABLE = yes           # Reduce firmware size
+COMBO_ENABLE = yes         # Combos
+TAP_DANCE_ENABLE = no      # Tap dance
