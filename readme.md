@@ -19,10 +19,13 @@ A 17-key macro pad with pushbutton rotary encoder and underglow RGB per key RGB 
 -   Custom macro key in VIA for Super Alt Tab, which is fully compatible with rotary encoders.
 -   Custom macro key in VIA for moving windows to other monitors in Windows, which is fully compatible with rotary encoders.
 
+## Make and Flashing
+
 Make example for this keyboard (after setting up your build environment):
 
     make solartempest/ps17:via
 
 To reset the board into bootloader mode, tap the Reset switch mounted on the bottom of the PCB.
+Flash with QMK toolbox, auto-flash.
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
