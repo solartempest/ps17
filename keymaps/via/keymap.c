@@ -24,50 +24,62 @@
 
 bool is_alt_tab_active = false; // Super Alt Tab Code
 uint16_t alt_tab_timer = 0;
-bool is_window_move_active = false; // Move Window Code
-uint16_t move_window_timer = 0;
+bool spam_arrow;
+uint16_t spam_timer = false;
+uint16_t spam_interval = 1000; // (1000ms == 1s)
 #ifdef VIA_ENABLE
 	enum custom_keycodes { //Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
 	  ATABF = USER00, //Alt tab forwards
 	  ATABR, //Alt tab reverse
 	  NMR, //Move window to monitor on right
-	  NML //Move window to monitor on left
+	  NML, //Move window to monitor on left
+	  SPAMARROW //Spam arrows
 	};
 #else
 	enum custom_keycodes { //Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
 	  ATABF = SAFE_RANGE, //Alt tab forwards
 	  ATABR, //Alt tab reverse
 	  NMR, //Move window to monitor on right
-	  NML //Move window to monitor on left
+	  NML, //Move window to monitor on left
+	  SPAMARROW //Spam arrows
 	};
 #endif
 
+#ifdef COMBO_ENABLE //Tap combos
+	enum combos {
+	  kppls_7, //Hold plus and 7 to backspace
+	  kppls_8, //Hold plus and 8 to delete
+	  kpent_4, //Hold enter and 4 for left arrow
+	  kpent_5, //Hold enter and 5 for down arrow
+	  kpent_6, //Hold enter and 6 for right arrow
+	  kpent_8, //Hold enter and 4'8 for up arrow
+	};
+	const uint16_t PROGMEM kppls7_combo[] = {KC_KP_PLUS, KC_KP_7, COMBO_END};
+	const uint16_t PROGMEM kppl8_combo[] = {KC_KP_PLUS, KC_KP_8, COMBO_END};
+	const uint16_t PROGMEM kpent4_combo[] = {KC_PENT, KC_KP_4, COMBO_END};
+	const uint16_t PROGMEM kpent5_combo[] = {KC_PENT, KC_KP_5, COMBO_END};
+	const uint16_t PROGMEM kpent6_combo[] = {KC_PENT, KC_KP_6, COMBO_END};
+	const uint16_t PROGMEM kpent8_combo[] = {KC_PENT, KC_KP_8, COMBO_END};
+	combo_t key_combos[COMBO_COUNT] = {
+	  [kppls_7] = COMBO(kppls7_combo, KC_BSPACE),
+	  [kppls_8] = COMBO(kppl8_combo, KC_DELETE),
+	  [kpent_4] = COMBO(kpent4_combo, KC_LEFT),
+	  [kpent_5] = COMBO(kpent5_combo, KC_DOWN),
+	  [kpent_6] = COMBO(kpent6_combo, KC_RGHT),
+	  [kpent_8] = COMBO(kpent8_combo, KC_UP)
+	};
+#endif
 
-enum combos { //Tap combos
-  kppls_7,
-  kppls_8
-};
-
-const uint16_t PROGMEM kppls7_combo[] = {KC_KP_PLUS, KC_KP_7, COMBO_END};
-const uint16_t PROGMEM kppl8_combo[] = {KC_KP_PLUS, KC_KP_8, COMBO_END};
-
-combo_t key_combos[COMBO_COUNT] = {
-  [kppls_7] = COMBO(kppls7_combo, KC_BSPACE),
-  [kppls_8] = COMBO(kppl8_combo, KC_DELETE)
-};
-
-
-// Tap Dance declarations
-enum {
-    TD_MINUS_NUMLOCK,
-};
-
-// Tap Dance definitions. Not VIA compatible.
-qk_tap_dance_action_t tap_dance_actions[] = {
-    // Tap once for Escape, twice for Caps Lock
-    [TD_MINUS_NUMLOCK] = ACTION_TAP_DANCE_DOUBLE(KC_KP_MINUS, KC_NUMLOCK),
-};
-//TD(TD_MINUS_NUMLOCK) // Add tap dance item to your keymap in place of a keycode
+#ifdef TAP_DANCE_ENABLE// Tap Dance definitions. Not VIA compatible.
+	enum {
+		TD_MINUS_NUMLOCK,
+	};
+	qk_tap_dance_action_t tap_dance_actions[] = {
+		// Tap once for Escape, twice for Caps Lock
+		[TD_MINUS_NUMLOCK] = ACTION_TAP_DANCE_DOUBLE(KC_KP_MINUS, KC_NUMLOCK),
+	};
+	//TD(TD_MINUS_NUMLOCK) // Add tap dance item to your keymap in place of a keycode (non-VIA only)
+#endif
 
 
 enum layer_names {
@@ -177,73 +189,87 @@ void matrix_scan_user(void) { //run whenever user matrix is scanned
       is_alt_tab_active = false;
     }
   }
-  if (is_window_move_active) {
-    if (timer_elapsed(move_window_timer) > 1000) {
-      unregister_code(KC_LSFT);
-      unregister_code(KC_LWIN);
-      is_window_move_active = false;
-    }
+  if (spam_arrow && timer_elapsed(spam_timer) >= spam_interval) {
+     spam_timer = timer_read();
+    tap_code(KC_UP);
+    tap_code(KC_DOWN);
   }
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-	switch (keycode) { //For super alt tab keycodes
-	case ATABF:	//Alt tab forwards
-	  if (record->event.pressed) {
-		if (!is_alt_tab_active) {
-		  is_alt_tab_active = true;
-		  register_code(KC_LALT);
-		}
-		alt_tab_timer = timer_read();
-		register_code(KC_TAB);
-	  } else {
-		unregister_code(KC_TAB);
-	  }
-	  break;
-	case ATABR:	//Alt tab reverse
-	  if (record->event.pressed) {
-		if (!is_alt_tab_active) {
-		  is_alt_tab_active = true;
-		  register_code(KC_LALT);
-		}
-		alt_tab_timer = timer_read();
-		register_code(KC_LSHIFT);
-		register_code(KC_TAB);
-	  } else {
-		unregister_code(KC_LSHIFT);
-		unregister_code(KC_TAB);
-	  }
-	  break;
-	  	case NMR:	//Move window to next monitor on right
-	  if (record->event.pressed) {
-		if (!is_window_move_active) {
-		  is_window_move_active = true;
-		  register_code(KC_LSFT);
-		  register_code(KC_LWIN);
-		}
-		move_window_timer = timer_read();
-		register_code(KC_RIGHT);
-	  } else {
-		unregister_code(KC_RIGHT);
-	  }
-	  break;
-	case NML:	//Move window to next monitor on left
-	  if (record->event.pressed) {
-		if (!is_window_move_active) {
-		  is_window_move_active = true;
-		  register_code(KC_LSFT);
-		  register_code(KC_LWIN);
-		}
-		move_window_timer = timer_read();
-		register_code(KC_LSHIFT);
-		register_code(KC_LEFT);
-	  } else {
-		unregister_code(KC_LEFT);
-	  }
-	  break;
+	switch (keycode) { //For keycode overrides
+		case ATABF:	//Alt tab forwards
+		  if (record->event.pressed) {
+			if (!is_alt_tab_active) {
+			  is_alt_tab_active = true;
+			  register_code(KC_LALT);
+			}
+			alt_tab_timer = timer_read();
+			register_code(KC_TAB);
+		  } else {
+			unregister_code(KC_TAB);
+		  }
+		  return true;
+		case ATABR:	//Alt tab reverse
+		  if (record->event.pressed) {
+			if (!is_alt_tab_active) {
+			  is_alt_tab_active = true;
+			  register_code(KC_LALT);
+			}
+			alt_tab_timer = timer_read();
+			register_code(KC_LSHIFT);
+			register_code(KC_TAB);
+		  } else {
+			unregister_code(KC_LSHIFT);
+			unregister_code(KC_TAB);
+		  }
+		  return true;
+		  
+		case NMR:	//Move window to next monitor on right
+		  if (record->event.pressed) {
+			register_code(KC_LSFT);
+			register_code(KC_LWIN);
+			register_code(KC_RIGHT);
+			unregister_code(KC_RIGHT);
+			unregister_code(KC_LWIN);
+			unregister_code(KC_LSFT);
+		  }
+		  return true;
+		case NML:	//Move window to next monitor on left
+		  if (record->event.pressed) {
+			register_code(KC_LSFT);
+			register_code(KC_LWIN);
+			register_code(KC_LEFT);
+			unregister_code(KC_LEFT);
+			unregister_code(KC_LWIN);
+			unregister_code(KC_LSFT);
+		  }
+		  return true;
+		  
+		case SPAMARROW: // Moves arrow up and down
+		  if (record->event.pressed) { 
+			spam_arrow ^= 1; 
+			spam_timer = timer_read();
+		  }
+		  return false;
 	}
 	return true;
 }
+
+
+// RGB Layer Light Settings - Note that this will fix the key switch LED colour and brightness
+const rgblight_segment_t PROGMEM my_layer0_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 0, 95,255,90}); //Spring green		(Code is extra for static key lighting of layers)
+const rgblight_segment_t PROGMEM my_layer1_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 0, 5,255,120}); //Yellow-orange	(Code is extra for static key lighting of layers)
+const rgblight_segment_t PROGMEM my_layer2_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 0, 128,255,100}); //Cyan			(Code is extra for static key lighting of layers)
+const rgblight_segment_t PROGMEM my_layer3_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 0, 215,255,120}); //Magenta		(Code is extra for static key lighting of layers)
+const rgblight_segment_t PROGMEM my_layer4_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 0, 15,255,120}); //Orange-red		(Code is extra for static key lighting of layers)
+const rgblight_segment_t *const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST( //Lighting layers
+    my_layer0_layer,
+    my_layer1_layer,
+    my_layer2_layer,
+    my_layer3_layer,
+    my_layer4_layer
+);
 
 
 void keyboard_post_init_user(void) {	//run as last task in keyboard init
@@ -253,12 +279,11 @@ void keyboard_post_init_user(void) {	//run as last task in keyboard init
 	//NOTE 3: VIA layers doesn't seem to work properly in RGB matrix mode
 	//rgb_matrix_enable_noeeprom(); //turn on RGB matrix based on previous state
 	rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE); //set initial RGB matrix mode	
-	rgb_matrix_sethsv_noeeprom(58, 255, 80); //sets LED to green-yellow
+	rgb_matrix_sethsv_noeeprom(50, 255, 80); //sets LED to green-yellow
   #endif
   #ifdef RGBLIGHT_ENABLE
-	rgblight_enable();
-	rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_GRADIENT+8); //Set to static gradient 9. Looks great this way!
-	rgblight_sethsv(58, 255, 30); //Set lower default brightness when connected as the right side dimming is not yet in effect
+    rgblight_layers = my_rgb_layers;// Enable the LED layers
+	rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_GRADIENT+8); //Set to static gradient 9
 	layer_move(0); //start on layer 0 to get the lighting activated
   #endif
 };
@@ -266,34 +291,40 @@ void keyboard_post_init_user(void) {	//run as last task in keyboard init
 
 #ifdef RGBLIGHT_ENABLE
 layer_state_t layer_state_set_user(layer_state_t state) {
-	switch (get_highest_layer(state)) {
-		//This custom layer lighting is similar to RGB Light Gradient 9, but customized to separate key and case underglow brightness
-		static uint16_t underglow_brightness = 140;
-		static uint16_t perkey_brightness = 80;
-		static uint16_t lastrow_brightness = 15; //for less shine-through at case edges
-		static uint16_t current_hue = 0; //hue calculated to be used
-		static uint16_t layer0_huestart = 56; //hue gradient starting colour - green/blue
-		static uint16_t layer0_hueincrement = 2; //hue gradient colour increment
-		static uint16_t layer1_huestart = 15; //hue gradient starting colour - orange/green
-		static uint16_t layer1_hueincrement = 2; //hue gradient colour increment
-		static uint16_t layer2_huestart = 220; //hue gradient starting colour - magenta/orange (this layer is for photoshop)
-		static uint16_t layer2_hueincrement = 2; //hue gradient colour increment
-		static uint16_t layer3_huestart = 135; //hue gradient starting colour - blue/purple
-		static uint16_t layer3_hueincrement = 2; //hue gradient colour increment
-		static uint16_t layer4_huestart = 30; //hue gradient starting colour - orange/red
-		static uint16_t layer4_hueincrement = 1; //hue gradient colour increment
+	rgblight_set_layer_state(0, layer_state_cmp(state, 0));    // Multiple layers will light up if both kb layers are active
+    rgblight_set_layer_state(1, layer_state_cmp(state, 1));
+    rgblight_set_layer_state(2, layer_state_cmp(state, 2));
+    rgblight_set_layer_state(3, layer_state_cmp(state, 3));
+    rgblight_set_layer_state(4, layer_state_cmp(state, 4));
+	
+	/*static uint16_t underglow_brightness = 140; //This code can be used to have edge and underglow LEDs selectively brighter
+	static uint16_t perkey_brightness = 80;
+	static uint16_t lastrow_brightness = 50; //for less shine-through at case edges (brighter is okay for FR4 plate)
+	static uint16_t current_hue = 0; //hue calculated to be used
+	static uint16_t layer0_huestart = 56; //hue gradient starting colour - green/blue
+	static uint16_t layer0_hueincrement = 2; //hue gradient colour increment
+	static uint16_t layer1_huestart = 15; //hue gradient starting colour - orange/green
+	static uint16_t layer1_hueincrement = 2; //hue gradient colour increment
+	static uint16_t layer2_huestart = 220; //hue gradient starting colour - magenta/orange (this layer is for photoshop)
+	static uint16_t layer2_hueincrement = 2; //hue gradient colour increment
+	static uint16_t layer3_huestart = 135; //hue gradient starting colour - blue/purple
+	static uint16_t layer3_hueincrement = 2; //hue gradient colour increment
+	static uint16_t layer4_huestart = 30; //hue gradient starting colour - orange/red
+	static uint16_t layer4_hueincrement = 1; //hue gradient colour increment
+	*/
+	// This is what the LED layout is.
+	// 1,                 0, 
+	// 3,                 2, 
+	// 9,   8, 7,  6,  5, 4, 
+	// 13, 12, 11, 10,   
+	// 18, 17, 16, 15,    14,
+	// 22, 21, 20, 19,   
+	// 27, 26, 25, 24,    23 
 		
-		/*#define RGBLIGHT_LED_MAP LED_LAYOUT( \
-		1,                 0, \
-		3,                 2, \
-		9,   8, 7,  6,  5, 4, \
-			13, 12, 11, 10,   \
-		18, 17, 16, 15,    14,\
-			22, 21, 20, 19,   \
-		27, 26, 25, 24,    23 )*/
-		
-		case _LAYER0:
-			for (uint8_t i = 0; i < RGBLED_NUM; i++){
+	switch(biton32(state)){ // Change all other LEDs based on layer state as well
+		case 0:
+			rgblight_sethsv_noeeprom(50,255,80);
+			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer0_hueincrement+layer0_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
 				if (i == 1 || i == 3 || i == 9 || i == 18 || i == 25 || i == 27) {	  
@@ -305,10 +336,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 				} else {
 				  rgblight_sethsv_at(current_hue,255,perkey_brightness,i);
 				};
-			};
+			};*/
 			break;
-		case _LAYER1:
-			for (uint8_t i = 0; i < RGBLED_NUM; i++){
+		case 1:
+			rgblight_sethsv_noeeprom(5,255,80);
+			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer1_hueincrement+layer1_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
 				if (i == 1 || i == 3 || i == 9 || i == 18 || i == 25 || i == 27) {	  
@@ -320,10 +352,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 				} else {
 				  rgblight_sethsv_at(current_hue,255,perkey_brightness,i);
 				};
-			};
+			};*/
 			break;
-		case _LAYER2: //Photoshop custom layer (macros and keys all done in VIA)
-			for (uint8_t i = 0; i < RGBLED_NUM; i++){
+		case 2:
+			rgblight_sethsv_noeeprom(128,255,80);
+			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer2_hueincrement+layer2_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
 				if (i == 1 || i == 3 || i == 9 || i == 18 || i == 25 || i == 27) {	  
@@ -335,10 +368,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 				} else {
 				  rgblight_sethsv_at(current_hue,255,perkey_brightness,i);
 				};
-			};
+			};*/
 			break;
-		case _LAYER3:
-			for (uint8_t i = 0; i < RGBLED_NUM; i++){
+		case 3:
+			rgblight_sethsv_noeeprom(215,255,80);
+			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer3_hueincrement+layer3_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
 				if (i == 1 || i == 3 || i == 9 || i == 18 || i == 25 || i == 27) {	  
@@ -350,10 +384,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 				} else {
 				  rgblight_sethsv_at(current_hue,255,perkey_brightness,i);
 				};
-			};
+			};*/
 			break;
-		case _LAYER4:
-			for (uint8_t i = 0; i < RGBLED_NUM; i++){
+		case 4:
+			rgblight_sethsv_noeeprom(15,255,80);
+			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer4_hueincrement+layer4_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
 				if (i == 1 || i == 3 || i == 9 || i == 18 || i == 25 || i == 27) {	  
@@ -365,8 +400,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 				} else {
 				  rgblight_sethsv_at(current_hue,255,perkey_brightness,i);
 				};
-			};
-		}
-	return state;
+			};*/
+			break;
+	  }
+    return state;
 	};
 #endif
