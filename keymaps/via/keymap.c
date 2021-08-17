@@ -190,7 +190,7 @@ void matrix_scan_user(void) { //run whenever user matrix is scanned
     }
   }
   if (spam_arrow && timer_elapsed(spam_timer) >= spam_interval) {
-     spam_timer = timer_read();
+    spam_timer = timer_read();
     tap_code(KC_UP);
     tap_code(KC_DOWN);
   }
@@ -250,6 +250,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		  if (record->event.pressed) { 
 			spam_arrow ^= 1; 
 			spam_timer = timer_read();
+			if(spam_arrow==1) { //Change LED colour on bottom row to orange to indicate on
+				rgblight_sethsv_at(15,255,120,24);
+				rgblight_sethsv_at(15,255,120,26);
+				}
+			else {
+				rgblight_sethsv_at(180,255,120,24); //Set LEDs back to purple, assuming on that coloured layer
+				rgblight_sethsv_at(180,255,120,26);
+				}
 		  }
 		  return false;
 	}
