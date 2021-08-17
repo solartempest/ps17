@@ -279,7 +279,7 @@ void keyboard_post_init_user(void) {	//run as last task in keyboard init
 	//NOTE 3: VIA layers doesn't seem to work properly in RGB matrix mode
 	//rgb_matrix_enable_noeeprom(); //turn on RGB matrix based on previous state
 	rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE); //set initial RGB matrix mode	
-	rgb_matrix_sethsv_noeeprom(50, 255, 80); //sets LED to green-yellow
+	rgb_matrix_sethsv_noeeprom(50, 255, 100); //sets LED to green-yellow
   #endif
   #ifdef RGBLIGHT_ENABLE
     rgblight_layers = my_rgb_layers;// Enable the LED layers
@@ -323,7 +323,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 		
 	switch(biton32(state)){ // Change all other LEDs based on layer state as well
 		case 0:
-			rgblight_sethsv_noeeprom(50,255,80);
+			rgblight_sethsv_noeeprom(50,255,100);
 			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer0_hueincrement+layer0_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
@@ -339,7 +339,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 			};*/
 			break;
 		case 1:
-			rgblight_sethsv_noeeprom(5,255,80);
+			rgblight_sethsv_noeeprom(5,255,100);
 			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer1_hueincrement+layer1_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
@@ -355,7 +355,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 			};*/
 			break;
 		case 2:
-			rgblight_sethsv_noeeprom(128,255,80);
+			rgblight_sethsv_noeeprom(128,255,100);
 			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer2_hueincrement+layer2_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
@@ -371,7 +371,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 			};*/
 			break;
 		case 3:
-			rgblight_sethsv_noeeprom(215,255,80);
+			rgblight_sethsv_noeeprom(215,255,100);
 			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer3_hueincrement+layer3_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
@@ -387,7 +387,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 			};*/
 			break;
 		case 4:
-			rgblight_sethsv_noeeprom(15,255,80);
+			rgblight_sethsv_noeeprom(15,255,100);
 			/*for (uint8_t i = 0; i < RGBLED_NUM; i++){ //This code can be used to have edge and underglow LEDs selectively brighter
 				current_hue=i*layer4_hueincrement+layer4_huestart; //Determine the calculated hue
 				if(current_hue>255){current_hue=current_hue-255;}; //Roll over max hue of 256
