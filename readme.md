@@ -11,19 +11,19 @@ A 17-key macro pad with pushbutton rotary encoder and underglow RGB per key RGB 
 # Custom Features:
 
 -   Remappable rotary encoder controls volume up/down/mute.
--   Adds key combo functionality for backspace, delete, and arrow keys.
--   RGB underglow and matrix support and remapped to physical locations (nicer gradient and effects).
--   Adds custom layer lighting with custom gradients (if enabled) for each.
--   VIA support included by default.
 -   Allows for remapping of per-layer rotary encoder functions in VIA.
+-   VIA support included by default.
+-   RGB underglow and matrix support and remapped to physical locations (nicer gradient and effects).
+-   Adds custom layer lighting with custom gradients for each.
 -   Custom macro key in VIA for Super Alt Tab, which is fully compatible with rotary encoders.
 -   Custom macro key in VIA for moving windows to other monitors in Windows, which is fully compatible with rotary encoders.
+-   Adds key combo functionality for backspace, delete, and arrow keys.
 
 ## Make and Flashing
 
 Make example for this keyboard (after setting up your build environment):
 
-    make solartempest/ps17:via
+    qmk compile -kb solartempest/ps17 -km via
 
 To reset the board into bootloader mode, tap the Reset switch mounted on the bottom of the PCB.
 Flash with QMK toolbox, auto-flash.
