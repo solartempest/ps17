@@ -27,8 +27,13 @@
     },
     {
       "name": "Spam Arrow",
-      "title": "Toggle Down Arrow then Up",
+      "title": "Toggle F24 on interval timer with Orange LED",
       "shortName": "SA"
+    },
+    {
+      "name": "Teams Muted",
+      "title": "Simply Change LED of 1 to show if muted or not",
+      "shortName": "TM"
     }
   ],
   "layouts": 
