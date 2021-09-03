@@ -27,13 +27,15 @@ uint16_t alt_tab_timer = 0;
 bool spam_arrow;
 uint16_t spam_timer = false;
 uint16_t spam_interval = 1000; // (1000ms == 1s)
+bool teams_muted;
 #ifdef VIA_ENABLE
 	enum custom_keycodes { //Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
 	  ATABF = USER00, //Alt tab forwards
 	  ATABR, //Alt tab reverse
 	  NMR, //Move window to monitor on right
 	  NML, //Move window to monitor on left
-	  SPAMARROW //Spam arrows
+	  SPAMARROW, //Spam arrows. Updated to send F24 instead, which is more convenient.
+	  TEAMSMUTE //MS Teams mute shortcut and simple LED status
 	};
 #else
 	enum custom_keycodes { //Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
@@ -41,7 +43,8 @@ uint16_t spam_interval = 1000; // (1000ms == 1s)
 	  ATABR, //Alt tab reverse
 	  NMR, //Move window to monitor on right
 	  NML, //Move window to monitor on left
-	  SPAMARROW //Spam arrows
+	  SPAMARROW, //Spam arrows. Updated to send F24 instead, which is more convenient.
+	  TEAMSMUTE //MS Teams mute shortcut and simple LED status
 	};
 #endif
 
@@ -191,8 +194,9 @@ void matrix_scan_user(void) { //run whenever user matrix is scanned
   }
   if (spam_arrow && timer_elapsed(spam_timer) >= spam_interval) {
     spam_timer = timer_read();
-    tap_code(KC_UP);
-    tap_code(KC_DOWN);
+    //tap_code(KC_UP);
+    //tap_code(KC_DOWN);
+    tap_code(KC_F24);
   }
 };
 
@@ -250,16 +254,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		  if (record->event.pressed) { 
 			spam_arrow ^= 1; 
 			spam_timer = timer_read();
-			if(spam_arrow==1) { //Change LED colour on bottom row to orange to indicate on
+			if(spam_arrow==1) { //Change LED colour on bottom row and underglow to orange to indicate on
 				rgblight_sethsv_at(15,255,120,24);
+				rgblight_sethsv_at(15,255,120,25);
 				rgblight_sethsv_at(15,255,120,26);
+				rgblight_sethsv_at(15,255,120,27);
 				}
 			else {
 				rgblight_sethsv_at(180,255,120,24); //Set LEDs back to purple, assuming on that coloured layer
+				rgblight_sethsv_at(180,255,120,25);
 				rgblight_sethsv_at(180,255,120,26);
+				rgblight_sethsv_at(180,255,120,27);
 				}
 		  }
 		  return false;
+		  
+		case TEAMSMUTE:	//Mute MS teams and simply change LED for key 1 colour
+		  if (record->event.pressed) {
+			register_code(KC_LCTRL);
+			register_code(KC_LSFT);
+			register_code(KC_M);
+			unregister_code(KC_M);
+			unregister_code(KC_LSFT);
+			unregister_code(KC_LCTRL);
+			teams_muted ^= 1; 
+			if(teams_muted==1) { //Change LED colour on LEDs for key 1 and underglow to orange to indicate muted
+				rgblight_sethsv_at(15,255,120,18);
+				rgblight_sethsv_at(15,255,120,22);
+				}
+			else {
+				rgblight_sethsv_at(175,255,120,18); //Set LEDs back to violet, assuming on that coloured layer
+				rgblight_sethsv_at(175,255,120,22);
+				}
+		  }
+		  return true;
 	}
 	return true;
 }
