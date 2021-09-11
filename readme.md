@@ -1,5 +1,8 @@
 # Atlantis PS17 Macropad
 
+## *Update: PS17 firmware is now moved!*
+*Find the latest code and files in my main fork:* [qmk_firmware/keyboards/solartempest/ps17](https://github.com/solartempest/qmk_firmware/tree/master/keyboards/solartempest/ps17)
+
 ![Atlantis PS17](https://i.imgur.com/Y0rkPgA.jpg)
 
 A 17-key macro pad with pushbutton rotary encoder and underglow RGB per key RGB and for the case.
